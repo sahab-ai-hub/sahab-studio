@@ -6,8 +6,9 @@ const API_URL = rawApiUrl.startsWith('http') ? rawApiUrl : `https://${rawApiUrl}
 
 const useAuthStore = create((set) => ({
   user: null,
-  token: localStorage.getItem('token') || null,
+  token: null,
   loading: false,
+  hydrated: false,
 
   login: async (email, password) => {
     set({ loading: true });
@@ -54,7 +55,9 @@ const useAuthStore = create((set) => ({
   loadFromStorage: () => {
     const token = localStorage.getItem('token');
     if (token) {
-      set({ token });
+      set({ token, hydrated: true });
+    } else {
+      set({ hydrated: true });
     }
   },
 }));
