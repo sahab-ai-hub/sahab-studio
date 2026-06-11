@@ -4,7 +4,7 @@ import { FiLogOut, FiHome, FiGrid, FiUser } from 'react-icons/fi';
 import useAuthStore from '../store/authStore';
 
 const Navbar = () => {
-  const { user, logout } = useAuthStore();
+  const { logout } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {

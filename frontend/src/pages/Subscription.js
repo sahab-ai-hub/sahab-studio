@@ -7,7 +7,7 @@ import useAuthStore from '../store/authStore';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 const Subscription = () => {
-  const { token, user } = useAuthStore();
+  const { token } = useAuthStore();
   const [plans, setPlans] = useState([]);
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);

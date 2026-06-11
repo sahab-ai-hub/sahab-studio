@@ -7,7 +7,7 @@ import useAuthStore from '../store/authStore';
 import useDesignStore from '../store/designStore';
 
 const Dashboard = () => {
-  const { user, token } = useAuthStore();
+  const { token } = useAuthStore();
   const { designs, getDesigns, deleteDesign, loading } = useDesignStore();
   const navigate = useNavigate();
 
