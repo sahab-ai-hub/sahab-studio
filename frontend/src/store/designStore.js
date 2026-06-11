@@ -1,7 +1,8 @@
-import { create } from 'zustand';
+import create from 'zustand';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const API_URL = rawApiUrl.startsWith('http') ? rawApiUrl : `https://${rawApiUrl}`;
 
 const useDesignStore = create((set, get) => ({
   designs: [],
