@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
-import useAuthStore from '../store/authStore';
-
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 const Templates = () => {
-  const { token } = useAuthStore();
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
 

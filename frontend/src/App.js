@@ -11,7 +11,7 @@ import Subscription from './pages/Subscription';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
-  const { token, loadFromStorage } = useAuthStore();
+  const { loadFromStorage } = useAuthStore();
 
   useEffect(() => {
     loadFromStorage();
