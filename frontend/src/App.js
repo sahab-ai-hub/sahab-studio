@@ -11,11 +11,15 @@ import Subscription from './pages/Subscription';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
-  const { loadFromStorage } = useAuthStore();
+  const { loadFromStorage, hydrated } = useAuthStore();
 
   useEffect(() => {
     loadFromStorage();
   }, [loadFromStorage]);
+
+  if (!hydrated) {
+    return null;
+  }
 
   return (
     <>
