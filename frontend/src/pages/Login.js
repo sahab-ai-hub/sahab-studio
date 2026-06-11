@@ -119,9 +119,13 @@ const Login = () => {
                 <input type="checkbox" className="w-4 h-4 rounded bg-white/10 border-white/20 text-purple-500 focus:ring-purple-500" />
                 <span className="ml-2">Remember me</span>
               </label>
-              <a href="#" className="text-sm text-purple-400 hover:text-purple-300 transition">
+              <button 
+                type="button"
+                className="text-sm text-purple-400 hover:text-purple-300 transition bg-none border-none cursor-pointer p-0"
+                onClick={() => alert('Password reset feature coming soon!')}
+              >
                 Forgot password?
-              </a>
+              </button>
             </motion.div>
 
             {/* Login Button */}
