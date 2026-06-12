@@ -1,15 +1,17 @@
 /**
- * Kimi K2.6 Client Configuration
+ * Mistral 7B Client Configuration
  *
  * Supports two deployment modes:
- *   1. Local vLLM  — set KIMI_LOCAL_URL (e.g. http://localhost:8000)
+ *   1. Local vLLM  — set KIMI_LOCAL_URL (e.g. http://vllm:8000)
  *   2. Remote API  — set KIMI_API_ENDPOINT + KIMI_API_KEY
  *
  * Environment variables:
  *   KIMI_LOCAL_URL      Local vLLM base URL (takes priority when set)
- *   KIMI_API_ENDPOINT   Remote Kimi API base URL
+ *                       Default: http://vllm:8000
+ *   KIMI_API_ENDPOINT   Remote API base URL
  *   KIMI_API_KEY        API key for remote endpoint (optional for local)
- *   KIMI_MODEL_NAME     Model identifier (default: "kimi-k2.6")
+ *   KIMI_MODEL_NAME     Model identifier
+ *                       Default: "mistralai/Mistral-7B-Instruct-v0.2"
  */
 
 'use strict';
@@ -19,7 +21,8 @@ const axios = require('axios');
 
 // ── Configuration ────────────────────────────────────────────────────────────
 
-const MODEL_NAME = process.env.KIMI_MODEL_NAME || 'kimi-k2.6';
+const MODEL_NAME =
+  process.env.KIMI_MODEL_NAME || 'mistralai/Mistral-7B-Instruct-v0.2';
 
 /**
  * Resolve the active base URL.
@@ -32,7 +35,8 @@ function getBaseUrl() {
   if (process.env.KIMI_API_ENDPOINT) {
     return process.env.KIMI_API_ENDPOINT.replace(/\/$/, '');
   }
-  return null;
+  // Default to the local vLLM instance running Mistral 7B
+  return 'http://vllm:8000';
 }
 
 /**
@@ -59,7 +63,7 @@ async function checkKimiConnection() {
     return {
       ok: false,
       error:
-        'No Kimi endpoint configured. Set KIMI_LOCAL_URL or KIMI_API_ENDPOINT.',
+        'No endpoint configured. Set KIMI_LOCAL_URL or KIMI_API_ENDPOINT.',
     };
   }
 
@@ -83,7 +87,7 @@ async function checkKimiConnection() {
 // ── Text generation ───────────────────────────────────────────────────────────
 
 /**
- * Send a chat-completion request to Kimi K2.6 and return the full response.
+ * Send a chat-completion request to Mistral 7B and return the full response.
  *
  * @param {Array<{role: string, content: string}>} messages  Chat history.
  * @param {object} [options]
@@ -96,7 +100,7 @@ async function generateText(messages, options = {}) {
   const baseUrl = getBaseUrl();
   if (!baseUrl) {
     throw new Error(
-      'Kimi endpoint not configured. Set KIMI_LOCAL_URL or KIMI_API_ENDPOINT.'
+      'Mistral endpoint not configured. Set KIMI_LOCAL_URL or KIMI_API_ENDPOINT.'
     );
   }
 
@@ -118,7 +122,7 @@ async function generateText(messages, options = {}) {
 
     const choice = response.data.choices?.[0];
     if (!choice) {
-      throw new Error('Kimi returned an empty choices array.');
+      throw new Error('Mistral returned an empty choices array.');
     }
 
     return {
@@ -130,14 +134,14 @@ async function generateText(messages, options = {}) {
     const detail = err.response
       ? `HTTP ${err.response.status}: ${JSON.stringify(err.response.data)}`
       : err.message;
-    throw new Error(`Kimi generateText failed: ${detail}`);
+    throw new Error(`Mistral generateText failed: ${detail}`);
   }
 }
 
 // ── Streaming generation ──────────────────────────────────────────────────────
 
 /**
- * Stream a chat-completion response from Kimi K2.6.
+ * Stream a chat-completion response from Mistral 7B.
  * Calls `onChunk(text)` for every incremental token and resolves when done.
  *
  * @param {Array<{role: string, content: string}>} messages  Chat history.
@@ -152,7 +156,7 @@ async function generateTextStream(messages, onChunk, options = {}) {
   const baseUrl = getBaseUrl();
   if (!baseUrl) {
     throw new Error(
-      'Kimi endpoint not configured. Set KIMI_LOCAL_URL or KIMI_API_ENDPOINT.'
+      'Mistral endpoint not configured. Set KIMI_LOCAL_URL or KIMI_API_ENDPOINT.'
     );
   }
 
@@ -211,14 +215,14 @@ async function generateTextStream(messages, onChunk, options = {}) {
 
       response.data.on('end', () => resolve({ fullText, model: modelName }));
       response.data.on('error', (err) =>
-        reject(new Error(`Kimi stream error: ${err.message}`))
+        reject(new Error(`Mistral stream error: ${err.message}`))
       );
     });
   } catch (err) {
     const detail = err.response
       ? `HTTP ${err.response.status}: ${JSON.stringify(err.response.data)}`
       : err.message;
-    throw new Error(`Kimi generateTextStream failed: ${detail}`);
+    throw new Error(`Mistral generateTextStream failed: ${detail}`);
   }
 }
 

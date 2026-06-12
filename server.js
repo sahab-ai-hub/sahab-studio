@@ -9,12 +9,12 @@ async function startServer() {
     await initializeDatabase();
     console.log('✅ Database initialized');
 
-    // Verify Kimi K2.6 endpoint is reachable
+    // Verify Mistral 7B endpoint is reachable
     const kimi = await checkKimiConnection();
     if (kimi.ok) {
-      console.log(`✅ Kimi K2.6 connected  model=${kimi.model}  endpoint=${kimi.baseUrl}`);
+      console.log(`✅ Mistral 7B connected  model=${kimi.model}  endpoint=${kimi.baseUrl}`);
     } else {
-      console.warn(`⚠️  Kimi K2.6 not reachable: ${kimi.error}`);
+      console.warn(`⚠️  Mistral 7B not reachable: ${kimi.error}`);
       console.warn('   AI endpoints will return 502 until the endpoint is configured.');
     }
 
