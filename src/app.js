@@ -10,6 +10,9 @@ const {
 
 const app = express();
 
+// Trust Railway's proxy so the rate limiter can read X-Forwarded-For correctly
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
 app.use(cors());
