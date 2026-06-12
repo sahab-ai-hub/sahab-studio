@@ -9,6 +9,7 @@ const {
 } = require('./config/kimi');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Middleware
 app.use(helmet());
@@ -45,7 +46,7 @@ app.post('/api/auth/login', (req, res) => {
   res.status(200).json({ message: 'Login endpoint' });
 });
 
-// ── Kimi K2.6 AI endpoints ────────────────────────────────────────────────────
+// ── Mistral 7B AI endpoints ───────────────────────────────────────────────────
 
 /**
  * POST /api/ai/generate
@@ -68,7 +69,7 @@ app.post('/api/ai/generate', async (req, res) => {
     const result = await generateText(messages, { maxTokens, temperature, topP });
     res.json(result);
   } catch (err) {
-    console.error('❌ Kimi generate error:', err.message);
+    console.error('❌ Mistral generate error:', err.message);
     res.status(502).json({ error: err.message });
   }
 });
@@ -105,7 +106,7 @@ app.post('/api/ai/stream', async (req, res) => {
     );
     res.write('data: [DONE]\n\n');
   } catch (err) {
-    console.error('❌ Kimi stream error:', err.message);
+    console.error('❌ Mistral stream error:', err.message);
     res.write(`data: [ERROR] ${err.message}\n\n`);
   } finally {
     res.end();
