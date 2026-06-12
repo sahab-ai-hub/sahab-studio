@@ -117,7 +117,7 @@ async function generateText(messages, options = {}) {
     const response = await axios.post(
       `${baseUrl}/v1/chat/completions`,
       payload,
-      { headers: buildHeaders(), timeout: 120_000 }
+      { headers: buildHeaders(), timeout: 300_000 }
     );
 
     const choice = response.data.choices?.[0];
@@ -176,7 +176,7 @@ async function generateTextStream(messages, onChunk, options = {}) {
       {
         headers: buildHeaders(),
         responseType: 'stream',
-        timeout: 120_000,
+        timeout: 300_000,
       }
     );
 
